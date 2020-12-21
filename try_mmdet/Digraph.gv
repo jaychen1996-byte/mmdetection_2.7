@@ -1,0 +1,79 @@
+digraph {
+	graph [size="12,12"]
+	node [align=left fontsize=12 height=0.2 ranksep=0.1 shape=box style=filled]
+	139744876534736 [label=MkldnnConvolutionBackward fillcolor=darkolivegreen1]
+	139744876534992 -> 139744876534736
+	139744876534992 [label=AddBackward0]
+	139744876535248 -> 139744876534992
+	139744876535248 [label=MkldnnConvolutionBackward]
+	139744876535440 -> 139744876535248
+	139744876535440 [label="lateral_convs.0.conv.weight
+ (11, 2, 1, 1)" fillcolor=lightblue]
+	139744876535568 -> 139744876535248
+	139744876535568 [label="lateral_convs.0.conv.bias
+ (11)" fillcolor=lightblue]
+	139744876535312 -> 139744876534992
+	139744876535312 [label=UpsampleNearest2DBackward]
+	139744876535632 -> 139744876535312
+	139744876535632 [label=AddBackward0]
+	139744876535504 -> 139744876535632
+	139744876535504 [label=MkldnnConvolutionBackward]
+	139744875159760 -> 139744876535504
+	139744875159760 [label="lateral_convs.1.conv.weight
+ (11, 3, 1, 1)" fillcolor=lightblue]
+	139744875159696 -> 139744876535504
+	139744875159696 [label="lateral_convs.1.conv.bias
+ (11)" fillcolor=lightblue]
+	139744876535696 -> 139744876535632
+	139744876535696 [label=UpsampleNearest2DBackward]
+	139744875159632 -> 139744876535696
+	139744875159632 [label=AddBackward0]
+	139744875160144 -> 139744875159632
+	139744875160144 [label=MkldnnConvolutionBackward]
+	139744875160016 -> 139744875160144
+	139744875160016 [label="lateral_convs.2.conv.weight
+ (11, 5, 1, 1)" fillcolor=lightblue]
+	139744875160336 -> 139744875160144
+	139744875160336 [label="lateral_convs.2.conv.bias
+ (11)" fillcolor=lightblue]
+	139744875160272 -> 139744875159632
+	139744875160272 [label=UpsampleNearest2DBackward]
+	139744875160400 -> 139744875160272
+	139744875160400 [label=MkldnnConvolutionBackward]
+	139744875160464 -> 139744875160400
+	139744875160464 [label="lateral_convs.3.conv.weight
+ (11, 7, 1, 1)" fillcolor=lightblue]
+	139744875160592 -> 139744875160400
+	139744875160592 [label="lateral_convs.3.conv.bias
+ (11)" fillcolor=lightblue]
+	139744876535056 -> 139744876534736
+	139744876535056 [label="fpn_convs.0.conv.weight
+ (11, 11, 3, 3)" fillcolor=lightblue]
+	139744876535120 -> 139744876534736
+	139744876535120 [label="fpn_convs.0.conv.bias
+ (11)" fillcolor=lightblue]
+	139744876534800 [label=MkldnnConvolutionBackward fillcolor=darkolivegreen1]
+	139744876535632 -> 139744876534800
+	139744876535184 -> 139744876534800
+	139744876535184 [label="fpn_convs.1.conv.weight
+ (11, 11, 3, 3)" fillcolor=lightblue]
+	139744876535760 -> 139744876534800
+	139744876535760 [label="fpn_convs.1.conv.bias
+ (11)" fillcolor=lightblue]
+	139744876534864 [label=MkldnnConvolutionBackward fillcolor=darkolivegreen1]
+	139744875159632 -> 139744876534864
+	139744876535376 -> 139744876534864
+	139744876535376 [label="fpn_convs.2.conv.weight
+ (11, 11, 3, 3)" fillcolor=lightblue]
+	139744875160080 -> 139744876534864
+	139744875160080 [label="fpn_convs.2.conv.bias
+ (11)" fillcolor=lightblue]
+	139744876534928 [label=MkldnnConvolutionBackward fillcolor=darkolivegreen1]
+	139744875160400 -> 139744876534928
+	139744875159824 -> 139744876534928
+	139744875159824 [label="fpn_convs.3.conv.weight
+ (11, 11, 3, 3)" fillcolor=lightblue]
+	139744875160528 -> 139744876534928
+	139744875160528 [label="fpn_convs.3.conv.bias
+ (11)" fillcolor=lightblue]
+}
