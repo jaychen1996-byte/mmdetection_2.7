@@ -30,3 +30,5 @@ python tools/test.py configs/yolo/yolov3_d53_320_273e_coco.py checkpoints/yolov3
 #训练SSD算法
 python tools/train.py configs/ssd/ssd300_coco.py
 """
+
+"test git"
