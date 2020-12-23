@@ -4,8 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from mmcv.cnn import ConvModule
-
-from ..builder import NECKS
+from torchviz import make_dot
 
 
 class DetectionBlock(nn.Module):
@@ -57,7 +56,6 @@ class DetectionBlock(nn.Module):
         return out
 
 
-@NECKS.register_module()
 class YOLOV3Neck(nn.Module):
     """The neck of YOLOV3.
 
@@ -105,28 +103,26 @@ class YOLOV3Neck(nn.Module):
             in_c, out_c = self.in_channels[i], self.out_channels[i]
             self.add_module(f'conv{i}', ConvModule(in_c, out_c, 1, **cfg))
             # in_c + out_c : High-lvl feats will be cat with low-lvl feats
-            self.add_module(f'detect{i+1}',
+            self.add_module(f'detect{i + 1}',
                             DetectionBlock(in_c + out_c, out_c, **cfg))
 
     def forward(self, feats):
         assert len(feats) == self.num_scales
 
-        for t in feats:
-            print(t.shape)
         # processed from bottom (high-lvl) to top (low-lvl)
         outs = []
         out = self.detect1(feats[-1])
         outs.append(out)
 
         for i, x in enumerate(reversed(feats[:-1])):
-            conv = getattr(self, f'conv{i+1}')
+            conv = getattr(self, f'conv{i + 1}')
             tmp = conv(out)
 
             # Cat with low-lvl feats
             tmp = F.interpolate(tmp, scale_factor=2)
             tmp = torch.cat((tmp, x), 1)
 
-            detect = getattr(self, f'detect{i+2}')
+            detect = getattr(self, f'detect{i + 2}')
             out = detect(tmp)
             outs.append(out)
 
@@ -136,3 +132,30 @@ class YOLOV3Neck(nn.Module):
         """Initialize the weights of module."""
         # init is done in ConvModule
         pass
+
+
+if __name__ == '__main__':
+    num_scales = 3
+    in_channels = [1024, 512, 256]
+    out_channels = [512, 256, 128]
+    self = YOLOV3Neck(num_scales, in_channels=in_channels, out_channels=out_channels)
+    self.eval()
+
+    # (1, 256, 52, 52)
+    # (1, 512, 26, 26)
+    # (1, 1024, 13, 13)
+
+    feat_1 = torch.rand(1, 256, 52, 52)
+    feat_2 = torch.rand(1, 512, 26, 26)
+    feat_3 = torch.rand(1, 1024, 13, 13)
+    inputs = (feat_1, feat_2, feat_3)
+    level_outputs = self.forward(inputs)
+    for level_out in level_outputs:
+        print(tuple(level_out.shape))
+    g = make_dot(self(inputs), params=dict(self.named_parameters()))
+    g.view()
+
+    """
+    1.输入的是骨架网络提取的三个特征图
+    2.上采样后拼接送入检测层(卷积)
+    """

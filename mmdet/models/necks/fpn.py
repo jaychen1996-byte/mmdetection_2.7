@@ -171,7 +171,7 @@ class FPN(nn.Module):
         """Forward function."""
         assert len(inputs) == len(self.in_channels)
 
-        # build laterals
+        # build laterals 将输入维度例如（256,512,1024,2048）横向链接到固定大小在此处为256
         laterals = [
             lateral_conv(inputs[i + self.start_level])
             for i, lateral_conv in enumerate(self.lateral_convs)

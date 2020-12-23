@@ -3,6 +3,7 @@ import logging
 
 import torch.nn as nn
 import torch
+from torchviz import make_dot
 
 
 # 3*3卷积层
@@ -190,11 +191,14 @@ class VGG(nn.Module):
 
 if __name__ == '__main__':
     # 实例化模型
-    mdoel = VGG(11, num_classes=2)
+    mdoel = VGG(16, num_classes=-1)
     # 随机变量维度是（1,3,300,300）,batch,inplanes,img_w,img_h
-    inputs = torch.rand(1, 3, 224, 224)
+    inputs = torch.rand(1, 3, 512, 512)
     # 进行前向推理
     level_outputs = mdoel(inputs)
     # 输出每层维度
     for level_out in level_outputs:
         print(tuple(level_out.shape))
+
+    g = make_dot(mdoel(inputs), params=dict(mdoel.named_parameters()))
+    g.view()

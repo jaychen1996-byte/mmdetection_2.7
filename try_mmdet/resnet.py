@@ -772,11 +772,6 @@ if __name__ == '__main__':
     level_outputs = self.forward(inputs)
     for level_out in level_outputs:
         print(tuple(level_out.shape))
-    # g = make_dot(self(inputs), params=dict(self.named_parameters()))
-    # g.view()
-    #
-    # import time
-    # time.sleep(1)
-    # for p in ["Digraph.gv", "Digraph.gv.pdf"]:
-    #     if os.path.exists(p):
-    #         os.remove(p)
+    g = make_dot(self(inputs), params=dict(self.named_parameters()))
+    g.view()
+
