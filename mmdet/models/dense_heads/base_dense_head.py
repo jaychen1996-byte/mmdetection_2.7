@@ -46,7 +46,9 @@ class BaseDenseHead(nn.Module, metaclass=ABCMeta):
                 losses: (dict[str, Tensor]): A dictionary of loss components.
                 proposal_list (list[Tensor]): Proposals of each image.
         """
-        outs = self(x)  # 得到卷积后的输出
+        # 得到一个元组,一个是分类的预测结果,一个是回归的预测结果
+        outs = self(x)
+
         if gt_labels is None:
             loss_inputs = outs + (gt_bboxes, img_metas)
         else:

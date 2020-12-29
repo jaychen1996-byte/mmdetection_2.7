@@ -196,6 +196,9 @@ class AnchorGenerator(object):
         Returns:
             tuple[torch.Tensor]: The mesh grids of x and y.
         """
+        # 传入的x是第一行的偏移
+        # 传入的y是第一列的偏移
+        # 重复len(y)次的x得到xx
         xx = x.repeat(len(y))
         yy = y.view(-1, 1).repeat(1, len(x)).view(-1)
         if row_major:
@@ -256,7 +259,6 @@ class AnchorGenerator(object):
         feat_w = int(feat_w)
         shift_x = torch.arange(0, feat_w, device=device) * stride[0]
         shift_y = torch.arange(0, feat_h, device=device) * stride[1]
-
         shift_xx, shift_yy = self._meshgrid(shift_x, shift_y)
         shifts = torch.stack([shift_xx, shift_yy, shift_xx, shift_yy], dim=-1)
         shifts = shifts.type_as(base_anchors)

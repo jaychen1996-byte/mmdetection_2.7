@@ -5,6 +5,7 @@ from mmdet.utils import util_mixins
 
 class AssignResult(util_mixins.NiceRepr):
     """Stores assignments between predicted and truth boxes.
+    存储预测框Gt框的样本划分结果
 
     Attributes:
         num_gts (int): the number of truth boxes considered when computing this

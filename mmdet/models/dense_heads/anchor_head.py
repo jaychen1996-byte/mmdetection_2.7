@@ -71,13 +71,14 @@ class AnchorHead(BaseDenseHead, BBoxTestMixin):
             raise ValueError(f'num_classes={num_classes} is too small')
         self.reg_decoded_bbox = reg_decoded_bbox
 
-        self.bbox_coder = build_bbox_coder(bbox_coder)
-        self.loss_cls = build_loss(loss_cls)
-        self.loss_bbox = build_loss(loss_bbox)
+        self.bbox_coder = build_bbox_coder(bbox_coder)  # 编码器,对label进行编码然后进行loss计算
+        self.loss_cls = build_loss(loss_cls)  # 分类损失
+        self.loss_bbox = build_loss(loss_bbox)  # 边框回归损失
         self.train_cfg = train_cfg
         self.test_cfg = test_cfg
         if self.train_cfg:
             self.assigner = build_assigner(self.train_cfg.assigner)
+            # 分类问题样本不均衡问题,为了解决不均衡的问题,需要首先划分进而确定正负样本,再使用一些方法来解决不均衡的问题,比如说采样
             # use PseudoSampler when sampling is False
             if self.sampling and hasattr(self.train_cfg, 'sampler'):
                 sampler_cfg = self.train_cfg.sampler
